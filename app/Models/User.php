@@ -3,15 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\HasName;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasName
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    public function getFilamentName(): string
+    {
+        return $this->nama;
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +25,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nama',
         'email',
         'password',
     ];
