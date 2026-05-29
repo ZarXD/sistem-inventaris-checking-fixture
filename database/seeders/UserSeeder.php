@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'nama' => 'Admin QC',
             'email' => 'admin@nifco.id',
             'password' => bcrypt('password'),
+            'role' => 'admin',
         ]);
     }
 }

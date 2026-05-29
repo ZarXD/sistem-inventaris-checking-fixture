@@ -18,28 +18,23 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use App\Filament\Pages\Auth\CustomRegister;
 
-class AdminPanelProvider extends PanelProvider
+class QcPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('admin')
-            ->path('admin')
-            ->login()
-            ->registration(CustomRegister::class)
-            ->brandName(config('app.name'))
+            ->id('qc')
+            ->path('qc')
             ->colors([
-                'primary' => Color::Orange,
+                'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->discoverResources(in: app_path('Filament/Qc/Resources'), for: 'App\Filament\Qc\Resources')
+            ->discoverPages(in: app_path('Filament/Qc/Pages'), for: 'App\Filament\Qc\Pages')
             ->pages([
                 Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Qc/Widgets'), for: 'App\Filament\Qc\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
