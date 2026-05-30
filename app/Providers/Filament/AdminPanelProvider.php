@@ -10,8 +10,10 @@ use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
+use App\Filament\Widgets\CFStatsOverview;
+use App\Filament\Widgets\StatusCFChart;
+use App\Filament\Widgets\LokasiCFChart;
+use App\Filament\Widgets\CFTerbaruTable;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -19,6 +21,9 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Pages\Auth\CustomRegister;
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
+
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -27,13 +32,26 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
-            ->path('admin')
-            ->login()
-            ->registration(CustomRegister::class)
+            ->path(app()->isProduction() ? '' : 'admin')
+            ->domain(app()->isProduction() ? env('FILAMENT_ADMIN_DOMAIN') : null)
+            // ->registration(CustomRegister::class)
             ->brandName(config('app.name'))
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
-                'primary' => Color::Orange,
+                'primary' => Color::hex('#ff7900'),
             ])
+            ->plugin(
+                AuthDesignerPlugin::make()
+                    ->login(fn ($config) => $config
+                        ->media(asset('nifco-id.png'))
+                        ->mediaPosition(MediaPosition::Cover)
+                        ->blur(4)
+                        ->renderHook(
+                            \Caresome\FilamentAuthDesigner\View\AuthDesignerRenderHook::CardBefore,
+                            fn () => view('auth.nifco-logo') // Buat file blade isinya logo NIFCO
+                        )
+                    )
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
@@ -41,8 +59,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\Filament\Widgets')
             ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
+                CFStatsOverview::class,
+                LokasiCFChart::class,
+                StatusCFChart::class,
+                CFTerbaruTable::class,
             ])
             ->middleware([
                 EncryptCookies::class,

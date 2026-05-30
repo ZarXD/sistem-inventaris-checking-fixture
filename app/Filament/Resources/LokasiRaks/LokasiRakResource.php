@@ -16,9 +16,17 @@ use Filament\Tables\Table;
 
 class LokasiRakResource extends Resource
 {
+    protected static ?string $pluralModelLabel = 'Lokasi Rak';
+    
+    protected static ?string $navigationLabel = 'Lokasi Rak';
+    
+    protected static string|\UnitEnum|null $navigationGroup = 'Master Data';
+    
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $model = LokasiRak::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedMapPin;
 
     protected static ?string $recordTitleAttribute = 'nama_rak';
 

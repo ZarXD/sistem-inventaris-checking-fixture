@@ -6,18 +6,17 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Caresome\FilamentAuthDesigner\AuthDesignerPlugin;
+use Caresome\FilamentAuthDesigner\Enums\MediaPosition;
 
 class QcPanelProvider extends PanelProvider
 {
@@ -25,20 +24,29 @@ class QcPanelProvider extends PanelProvider
     {
         return $panel
             ->id('qc')
-            ->path('qc')
+            ->path(app()->isProduction() ? '' : 'qc')
+            ->domain(app()->isProduction() ? env('FILAMENT_QC_DOMAIN') : null)
+            ->login()
+            ->viteTheme('resources/css/filament/qc/theme.css')
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#ff7900'),
             ])
+            ->plugin(
+                AuthDesignerPlugin::make()
+                    ->login(fn ($config) => $config
+                        ->media(asset('nifco-id.png'))
+                        ->mediaPosition(MediaPosition::Cover)
+                        ->blur(4)
+                        ->renderHook(
+                            \Caresome\FilamentAuthDesigner\View\AuthDesignerRenderHook::CardBefore,
+                            fn () => view('auth.nifco-logo')
+                        )
+                    )
+            )   
             ->discoverResources(in: app_path('Filament/Qc/Resources'), for: 'App\Filament\Qc\Resources')
             ->discoverPages(in: app_path('Filament/Qc/Pages'), for: 'App\Filament\Qc\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
             ->discoverWidgets(in: app_path('Filament/Qc/Widgets'), for: 'App\Filament\Qc\Widgets')
-            ->widgets([
-                AccountWidget::class,
-                FilamentInfoWidget::class,
-            ])
+            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
