@@ -35,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->path(app()->isProduction() ? '' : 'admin')
             ->domain(app()->isProduction() ? env('FILAMENT_ADMIN_DOMAIN') : null)
             // ->registration(CustomRegister::class)
-            ->brandName(config('app.name'))
+            ->brandName(config('app.name_sidebar'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::hex('#ff7900'),

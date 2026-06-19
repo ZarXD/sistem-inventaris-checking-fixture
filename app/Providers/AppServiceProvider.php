@@ -98,7 +98,7 @@ class AppServiceProvider extends ServiceProvider
                 .fi-auth-layout .fi-simple-header-subheading {
                     display: block !important;
                     color: rgba(255, 255, 255, 0.50) !important;
-                    font-size: 0.7rem !important;
+                    font-size: 0.75rem !important;   /* 12px — min readable untuk uppercase label */
                     font-weight: 500 !important;
                     letter-spacing: 0.10em !important;
                     text-transform: uppercase !important;
@@ -120,7 +120,7 @@ class AppServiceProvider extends ServiceProvider
                 .fi-auth-layout .fi-fo-field-wrp > div > label,
                 .fi-auth-layout .fi-fo-field-wrp label {
                     color: rgba(255, 255, 255, 0.70) !important;
-                    font-size: 0.8rem !important;
+                    font-size: 0.875rem !important;  /* 14px — WCAG minimum untuk label form */
                     font-weight: 500 !important;
                     letter-spacing: 0.01em !important;
                     margin-bottom: 0.35rem !important;
@@ -146,7 +146,7 @@ class AppServiceProvider extends ServiceProvider
                     background: transparent !important;
                     border: none !important;
                     color: #ffffff !important;
-                    font-size: 0.9rem !important;
+                    font-size: 1rem !important;      /* 16px — wajib agar browser mobile tidak auto-zoom */
                     padding: 0.65rem 0.75rem !important;
                     box-shadow: none !important;
                 }
@@ -174,13 +174,13 @@ class AppServiceProvider extends ServiceProvider
                 .fi-auth-layout .fi-checkbox-label,
                 .fi-auth-layout [class*="checkbox"] label {
                     color: rgba(255, 255, 255, 0.60) !important;
-                    font-size: 0.82rem !important;
+                    font-size: 0.875rem !important;  /* 14px — konsisten dengan label field */
                 }
 
                 /* -- Links (forgot password, etc) -- */
                 .fi-auth-layout a {
                     color: rgba(255, 150, 50, 0.90) !important;
-                    font-size: 0.82rem !important;
+                    font-size: 0.875rem !important;  /* 14px — link harus mudah dibaca & diklik */
                     text-decoration: none !important;
                     transition: color 0.15s !important;
                 }
@@ -198,10 +198,10 @@ class AppServiceProvider extends ServiceProvider
                     border: none !important;
                     border-radius: 0.5rem !important;
                     color: #ffffff !important;
-                    font-size: 0.9rem !important;
+                    font-size: 0.9375rem !important; /* 15px — button CTA harus prominent & mudah dibaca */
                     font-weight: 600 !important;
                     letter-spacing: 0.02em !important;
-                    padding: 0.7rem 1.5rem !important;
+                    padding: 0.75rem 1.5rem !important; /* sedikit lebih tinggi untuk touch target 44px */
                     box-shadow: 0 4px 16px rgba(255, 121, 0, 0.35) !important;
                     transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease !important;
                     cursor: pointer !important;

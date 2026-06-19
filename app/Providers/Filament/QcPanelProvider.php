@@ -27,6 +27,7 @@ class QcPanelProvider extends PanelProvider
             ->path(app()->isProduction() ? '' : 'qc')
             ->domain(app()->isProduction() ? env('FILAMENT_QC_DOMAIN') : null)
             ->login()
+            ->brandName(config('app.name_sidebar'))
             ->viteTheme('resources/css/filament/qc/theme.css')
             ->colors([
                 'primary' => Color::hex('#ff7900'),
