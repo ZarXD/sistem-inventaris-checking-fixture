@@ -15,6 +15,7 @@ class CheckingFixture extends Model
         'nama_cf',
         'status_ketersediaan',
         'lokasi_rak_id',
+        'image',
     ];
 
     public function lokasiRak()

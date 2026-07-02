@@ -34,6 +34,13 @@ class CheckingFixtureForm
                     ->searchable()
                     ->preload()
                     ->required(),
+                \Filament\Forms\Components\FileUpload::make('image')
+                    ->label('Foto CF')
+                    ->image()
+                    ->disk('public')
+                    ->directory('checking-fixtures')
+                    ->maxSize(5120)
+                    ->columnSpanFull(),
             ]);
     }
 }

@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Laporan Riwayat Checking Fixture</title>
+    <title>Daftar Laporan Kerusakan Checking Fixture</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -121,12 +121,13 @@
             color: #333;
         }
         .td-no { width: 4%; text-align: center; color: #888; font-size: 10px; }
-        .td-cf { width: 24%; }
+        .td-cf { width: 22%; }
         .cf-part { font-weight: bold; color: #1a1a2e; font-size: 11px; }
         .cf-name { color: #777; font-size: 9.5px; margin-top: 2px; }
-        .td-user { width: 20%; }
-        .td-status { width: 17%; text-align: center; }
-        .td-tanggal { width: 22%; }
+        .td-user { width: 18%; }
+        .td-ket { width: 26%; }
+        .td-status { width: 12%; text-align: center; }
+        .td-tanggal { width: 18%; }
 
         /* ── Status Badge ────────────────────────────── */
         .badge {
@@ -188,7 +189,7 @@
         </div>
         <div class="header-info">
             <div class="company">PT. Nifco Indonesia</div>
-            <div class="doc-title">Laporan Riwayat Transaksi</div>
+            <div class="doc-title">Daftar Laporan Kerusakan</div>
             <div class="doc-sub">Sistem Informasi Inventaris Checking Fixture</div>
         </div>
     </div>
@@ -197,10 +198,10 @@
     <div class="meta-box">
         <div class="meta-col">
             <div class="meta-label">Nomor Dokumen</div>
-            <div class="meta-value">DOC/QC/{{ now()->format('Ymd') }}/{{ str_pad($riwayat->count(), 3, '0', STR_PAD_LEFT) }}</div>
+            <div class="meta-value">DOC/QC-RPT/{{ now()->format('Ymd') }}/{{ str_pad($laporan->count(), 3, '0', STR_PAD_LEFT) }}</div>
             <div style="margin-top:6px">
                 <div class="meta-label">Jumlah Data</div>
-                <div class="meta-value">{{ $riwayat->count() }} Transaksi</div>
+                <div class="meta-value">{{ $laporan->count() }} Laporan</div>
             </div>
         </div>
         <div class="meta-col" style="text-align:right">
@@ -219,16 +220,14 @@
             <tr>
                 <th class="td-no">No</th>
                 <th class="td-cf">Checking Fixture</th>
-                <th class="td-user">User / Karyawan</th>
-                <th class="td-status">Status Transaksi</th>
-                <th class="td-tanggal">Tanggal & Waktu</th>
+                <th class="td-user">Pelapor</th>
+                <th class="td-ket">Keterangan Kerusakan</th>
+                <th class="td-status">Status</th>
+                <th class="td-tanggal">Tgl. Laporan</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($riwayat as $index => $item)
-                @php
-                    $status = $item->jenis_transaksi ?? $item->status_transaksi ?? '-';
-                @endphp
+            @forelse($laporan as $index => $item)
                 <tr>
                     <td class="td-no">{{ $index + 1 }}</td>
                     <td class="td-cf">
@@ -236,18 +235,19 @@
                         <div class="cf-name">{{ $item->checkingFixture?->nama_cf ?? '-' }}</div>
                     </td>
                     <td class="td-user">{{ $item->user?->name ?? $item->user?->nama ?? '-' }}</td>
+                    <td class="td-ket">{{ \Illuminate\Support\Str::limit($item->keterangan, 80) }}</td>
                     <td class="td-status">
-                        <span class="badge">{{ $status }}</span>
+                        <span class="badge">{{ $item->status }}</span>
                     </td>
                     <td class="td-tanggal">
-                        {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->timezone('Asia/Jakarta')->format('d M Y') }}<br>
-                        <span style="color:#888;font-size:9.5px">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->timezone('Asia/Jakarta')->format('H:i') }} WIB</span>
+                        {{ \Carbon\Carbon::parse($item->created_at)->timezone('Asia/Jakarta')->format('d M Y') }}<br>
+                        <span style="color:#888;font-size:9.5px">{{ \Carbon\Carbon::parse($item->created_at)->timezone('Asia/Jakarta')->format('H:i') }} WIB</span>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" style="text-align:center; padding:20px; color:#aaa;">
-                        Tidak ada data transaksi.
+                    <td colspan="6" style="text-align:center; padding:20px; color:#aaa;">
+                        Tidak ada data laporan kerusakan.
                     </td>
                 </tr>
             @endforelse

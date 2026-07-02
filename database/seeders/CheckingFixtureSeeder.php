@@ -41,7 +41,7 @@ class CheckingFixtureSeeder extends Seeder
         $count = 0;
         for ($i = 0; $i < 50; $i++) {
             $prefix    = $faker->randomElement($awalanPart);
-            $number    = $faker->numerify('####');
+            $number    = $faker->unique()->numerify('####');
             $partNumber = $prefix . $number;
 
             $namaCf = $faker->randomElement($cfPrefix) . ' ' . $faker->randomElement($cfSuffix);
@@ -52,6 +52,7 @@ class CheckingFixtureSeeder extends Seeder
                 'customer'            => $faker->randomElement($customers),
                 'lokasi_rak_id'       => $faker->randomElement($lokasiRakIds),
                 'status_ketersediaan' => $faker->randomElement($statusList),
+                'image'               => 'checking-fixtures/cf_dummy.png',
             ]);
             $count++;
         }

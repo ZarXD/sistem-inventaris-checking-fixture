@@ -44,31 +44,41 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                 {{-- Card Info CF --}}
-                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-6 shadow-sm">
-                    <h3 class="text-base font-bold mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">Informasi Checking Fixture</h3>
-                    <div class="grid grid-cols-[140px_12px_1fr] gap-y-3 text-sm">
-                        <div class="font-medium text-gray-500 dark:text-gray-400">Part Number</div>
-                        <div class="text-gray-400">:</div>
-                        <div class="font-semibold">{{ $cf->part_number }}</div>
+                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm flex flex-col">
+                    @if($cf->image)
+                        <div class="w-full h-48 bg-gray-100 dark:bg-gray-800">
+                            <a href="{{ Storage::disk('public')->url($cf->image) }}" target="_blank">
+                                <img src="{{ Storage::disk('public')->url($cf->image) }}" alt="Foto CF {{ $cf->part_number }}" class="w-full h-full object-cover hover:opacity-90 transition-opacity">
+                            </a>
+                        </div>
+                    @endif
+                    
+                    <div class="p-6 flex-1">
+                        <h3 class="text-base font-bold mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">Informasi Checking Fixture</h3>
+                        <div class="grid grid-cols-[140px_12px_1fr] gap-y-3 text-sm">
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Part Number</div>
+                            <div class="text-gray-400">:</div>
+                            <div class="font-semibold">{{ $cf->part_number }}</div>
 
-                        <div class="font-medium text-gray-500 dark:text-gray-400">Customer</div>
-                        <div class="text-gray-400">:</div>
-                        <div>{{ $cf->customer ?? '-' }}</div>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Customer</div>
+                            <div class="text-gray-400">:</div>
+                            <div>{{ $cf->customer ?? '-' }}</div>
 
-                        <div class="font-medium text-gray-500 dark:text-gray-400">Nama Part / CF</div>
-                        <div class="text-gray-400">:</div>
-                        <div>{{ $cf->nama_cf }}</div>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Nama Part / CF</div>
+                            <div class="text-gray-400">:</div>
+                            <div>{{ $cf->nama_cf }}</div>
 
-                        <div class="font-medium text-gray-500 dark:text-gray-400">Lokasi Rak</div>
-                        <div class="text-gray-400">:</div>
-                        <div>{{ $cf->lokasiRak?->nama_rak ?? 'Belum ada rak' }}</div>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Lokasi Rak</div>
+                            <div class="text-gray-400">:</div>
+                            <div>{{ $cf->lokasiRak?->nama_rak ?? 'Belum ada rak' }}</div>
 
-                        <div class="font-medium text-gray-500 dark:text-gray-400">Status Saat Ini</div>
-                        <div class="text-gray-400">:</div>
-                        <div>
-                            <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full text-xs font-semibold">
-                                {{ $cf->status_ketersediaan }}
-                            </span>
+                            <div class="font-medium text-gray-500 dark:text-gray-400">Status Saat Ini</div>
+                            <div class="text-gray-400">:</div>
+                            <div>
+                                <span class="px-2.5 py-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-full text-xs font-semibold">
+                                    {{ $cf->status_ketersediaan }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

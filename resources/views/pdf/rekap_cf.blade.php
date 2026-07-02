@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="utf-8">
-    <title>Laporan Riwayat Checking Fixture</title>
+    <title>Laporan Rekap Checking Fixture</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -89,44 +89,105 @@
             color: #1a1a2e;
         }
 
-        /* ── Table ───────────────────────────────────── */
-        table.data-table {
+        /* ── Section Title ───────────────────────────── */
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #ff7900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #ffe0c0;
+        }
+
+        /* ── Ringkasan Stats ─────────────────────────── */
+        .stats-table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .stats-table td {
+            padding: 7px 12px;
+            border: 1px solid #e8eaf0;
             font-size: 10.5px;
         }
-        table.data-table thead tr {
-            color: #1a1a2e;
-            border-bottom: 2px solid #1a1a2e;
+        .stats-table tr:nth-child(even) td {
+            background-color: #f5f7fb;
         }
-        table.data-table thead th {
-            padding: 9px 10px;
-            text-align: left;
+        .stats-label {
+            width: 60%;
+            color: #444;
+        }
+        .stats-value {
+            width: 20%;
+            text-align: center;
+            font-weight: bold;
+            color: #1a1a2e;
+        }
+        .stats-pct {
+            width: 20%;
+            text-align: center;
+            color: #888;
+            font-size: 10px;
+        }
+        .stats-header td {
+            color: #1a1a2e;
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            font-weight: bold;
-            border: none;
+            /* Disesuaikan jadi 2px atas & bawah biar seragam sama tabel detail */
+            border-top: 2px solid #1a1a2e !important;
+            border-bottom: 2px solid #1a1a2e !important;
+            border-left: 1px solid #e8eaf0;
+            border-right: 1px solid #e8eaf0;
         }
-        table.data-table tbody tr:nth-child(even) {
+        .stats-total td {
+            background-color: #fff3e0 !important;
+            font-weight: bold;
+            color: #c05000;
+            border-color: #ffc080;
+        }
+
+        /* ── Detail Table ────────────────────────────── */
+        table.detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-bottom: 20px;
+        }
+        table.detail-table thead th {
+            padding: 9px 10px;
+            text-align: left;
+            font-size: 9.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: bold;
+            /* Disesuaikan jadi 2px atas & bawah */
+            border-top: 2px solid #1a1a2e;
+            border-bottom: 2px solid #1a1a2e;
+            border-left: none;
+            border-right: none;
+            color: #1a1a2e;
+        }
+        table.detail-table tbody tr:nth-child(even) {
             background-color: #f5f7fb;
         }
-        table.data-table tbody tr:nth-child(odd) {
+        table.detail-table tbody tr:nth-child(odd) {
             background-color: #ffffff;
         }
-        table.data-table tbody td {
-            padding: 8px 10px;
+        table.detail-table tbody td {
+            padding: 7px 9px;
             border-bottom: 1px solid #e8eaf0;
-            vertical-align: top;
+            vertical-align: middle;
             color: #333;
         }
-        .td-no { width: 4%; text-align: center; color: #888; font-size: 10px; }
-        .td-cf { width: 24%; }
-        .cf-part { font-weight: bold; color: #1a1a2e; font-size: 11px; }
-        .cf-name { color: #777; font-size: 9.5px; margin-top: 2px; }
-        .td-user { width: 20%; }
-        .td-status { width: 17%; text-align: center; }
-        .td-tanggal { width: 22%; }
+        .td-no    { width: 4%;  text-align: center; color: #888; font-size: 9.5px; }
+        .td-part  { width: 18%; font-weight: bold; color: #1a1a2e; }
+        .td-nama  { width: 25%; }
+        .td-cust  { width: 18%; }
+        .td-lok   { width: 15%; }
+        .td-status{ width: 20%; text-align: center; }
 
         /* ── Status Badge ────────────────────────────── */
         .badge {
@@ -134,7 +195,7 @@
             font-size: 9.5px;
             font-weight: bold;
             letter-spacing: 0.2px;
-            color: #000;
+            color: #1a1a2e;
         }
 
         /* ── Area Tanda Tangan (Nempel setelah tabel) ── */
@@ -181,6 +242,7 @@
 </div>
 
 <div class="page">
+
     {{-- ─── Header ─────────────────────────────────────── --}}
     <div class="header">
         <div class="header-logo">
@@ -188,7 +250,7 @@
         </div>
         <div class="header-info">
             <div class="company">PT. Nifco Indonesia</div>
-            <div class="doc-title">Laporan Riwayat Transaksi</div>
+            <div class="doc-title">Laporan Rekap Checking Fixture</div>
             <div class="doc-sub">Sistem Informasi Inventaris Checking Fixture</div>
         </div>
     </div>
@@ -197,11 +259,11 @@
     <div class="meta-box">
         <div class="meta-col">
             <div class="meta-label">Nomor Dokumen</div>
-            <div class="meta-value">DOC/QC/{{ now()->format('Ymd') }}/{{ str_pad($riwayat->count(), 3, '0', STR_PAD_LEFT) }}</div>
-            <div style="margin-top:6px">
-                <div class="meta-label">Jumlah Data</div>
-                <div class="meta-value">{{ $riwayat->count() }} Transaksi</div>
-            </div>
+            <div class="meta-value">DOC/QC/{{ now()->format('Ymd') }}/RKP</div>
+            <!-- <div style="margin-top:6px">
+                <div class="meta-label">Filter Diterapkan</div>
+                <div class="meta-value">{{ $filter_label }}</div>
+            </div> -->
         </div>
         <div class="meta-col" style="text-align:right">
             <div class="meta-label">Tanggal Cetak</div>
@@ -213,41 +275,65 @@
         </div>
     </div>
 
-    {{-- ─── Tabel ──────────────────────────────────────── --}}
-    <table class="data-table">
+    {{-- ─── Ringkasan Status ────────────────────────────── --}}
+    <div class="section-title">Ringkasan Status Checking Fixture</div>
+    @php $total = array_sum($ringkasan); @endphp
+    <table class="stats-table">
         <thead>
-            <tr>
-                <th class="td-no">No</th>
-                <th class="td-cf">Checking Fixture</th>
-                <th class="td-user">User / Karyawan</th>
-                <th class="td-status">Status Transaksi</th>
-                <th class="td-tanggal">Tanggal & Waktu</th>
+            <tr class="stats-header">
+                <td class="stats-label">Status Ketersediaan</td>
+                <td class="stats-value">Jumlah</td>
+                <td class="stats-pct">Persentase</td>
             </tr>
         </thead>
         <tbody>
-            @forelse($riwayat as $index => $item)
+            @foreach($ringkasan as $status => $jumlah)
                 @php
-                    $status = $item->jenis_transaksi ?? $item->status_transaksi ?? '-';
+                    $pct = $total > 0 ? round(($jumlah / $total) * 100, 1) : 0;
                 @endphp
                 <tr>
+                    <td class="stats-label">{{ $status }}</td>
+                    <td class="stats-value">{{ $jumlah }}</td>
+                    <td class="stats-pct">{{ $pct }}%</td>
+                </tr>
+            @endforeach
+            <tr class="stats-total">
+                <td class="stats-label">TOTAL</td>
+                <td class="stats-value">{{ $total }}</td>
+                <td class="stats-pct">100%</td>
+            </tr>
+        </tbody>
+    </table>
+
+    {{-- ─── Detail Checking Fixture ─────────────────────── --}}
+    <div class="section-title">Detail Checking Fixture</div>
+    <table class="detail-table">
+        <thead>
+            <tr>
+                <th class="td-no">No</th>
+                <th class="td-part">Part Number</th>
+                <th class="td-nama">Nama CF</th>
+                <th class="td-cust">Customer</th>
+                <th class="td-lok">Lokasi Rak</th>
+                <th class="td-status">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($data as $index => $item)
+                <tr>
                     <td class="td-no">{{ $index + 1 }}</td>
-                    <td class="td-cf">
-                        <div class="cf-part">{{ $item->checkingFixture?->part_number ?? '-' }}</div>
-                        <div class="cf-name">{{ $item->checkingFixture?->nama_cf ?? '-' }}</div>
-                    </td>
-                    <td class="td-user">{{ $item->user?->name ?? $item->user?->nama ?? '-' }}</td>
+                    <td class="td-part">{{ $item->part_number ?? '-' }}</td>
+                    <td class="td-nama">{{ $item->nama_cf ?? '-' }}</td>
+                    <td class="td-cust">{{ $item->customer ?? '-' }}</td>
+                    <td class="td-lok">{{ $item->lokasiRak?->nama_rak ?? '-' }}</td>
                     <td class="td-status">
-                        <span class="badge">{{ $status }}</span>
-                    </td>
-                    <td class="td-tanggal">
-                        {{ \Carbon\Carbon::parse($item->tanggal_transaksi)->timezone('Asia/Jakarta')->format('d M Y') }}<br>
-                        <span style="color:#888;font-size:9.5px">{{ \Carbon\Carbon::parse($item->tanggal_transaksi)->timezone('Asia/Jakarta')->format('H:i') }} WIB</span>
+                        <span class="badge">{{ $item->status_ketersediaan }}</span>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" style="text-align:center; padding:20px; color:#aaa;">
-                        Tidak ada data transaksi.
+                    <td colspan="6" style="text-align:center; padding:20px; color:#aaa;">
+                        Tidak ada data checking fixture.
                     </td>
                 </tr>
             @endforelse
@@ -262,7 +348,7 @@
             <div class="sign-line">Nama &amp; Tanda Tangan</div>
         </div>
     </div>
-</div>
 
+</div>
 </body>
 </html>
